@@ -1,9 +1,9 @@
 using System.IO;
 using Xunit;
 
-namespace LibSassBuilder.ExcludeTests
+namespace DartSassBuilder.ExcludeTests
 {
-	// This project is configured to run LibSassBuilder in LibSassBuilder.DirectoryTests.csproj excluding foo & bar directories
+	// This project is configured to run DartSassBuilder in DartSassBuilder.DirectoryTests.csproj excluding foo & bar directories
 	public class ExcludeTests
 	{
 		private readonly string _fileDirectory;

@@ -1,17 +1,17 @@
-# LibSassBuilder
+# DartSassBuilder
 
 > Inspired by [Delegate.SassBuilder](https://github.com/delegateas/Delegate.SassBuilder) and [LibSassHost](https://github.com/Taritsyn/LibSassHost)
 
 Build | NuGet Package | .NET Global Tool
 ---|---|---
-![Build](https://github.com/johan-v-r/LibSassBuilder/workflows/Build/badge.svg) | [![Nuget](https://img.shields.io/nuget/v/LibSassBuilder)](https://www.nuget.org/packages/LibSassBuilder/) | [![.NET Tool](https://img.shields.io/nuget/v/LibSassBuilder-Tool)](https://www.nuget.org/packages/LibSassBuilder-Tool/) 
+![Build](https://github.com/johan-v-r/DartSassBuilder/workflows/Build/badge.svg) | [![Nuget](https://img.shields.io/nuget/v/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder/) | [![.NET Tool](https://img.shields.io/nuget/v/DartSassBuilder-Tool)](https://www.nuget.org/packages/DartSassBuilder-Tool/) 
 
 
-![LibSassBuilder](https://raw.githubusercontent.com/johan-v-r/LibSassBuilder/main/package/sass.png)
+![DartSassBuilder](https://raw.githubusercontent.com/johan-v-r/DartSassBuilder/main/package/sass.png)
 
-## [Nuget Package](https://www.nuget.org/packages/LibSassBuilder) 
+## [Nuget Package](https://www.nuget.org/packages/DartSassBuilder) 
 
-`LibSassBuilder` NuGet package adds a build task to compile Sass files to `.css`. It's compatible with both MSBuild (VS) and `dotnet build`.
+`DartSassBuilder` NuGet package adds a build task to compile Sass files to `.css`. It's compatible with both MSBuild (VS) and `dotnet build`.
 
 No configuration is required, it will compile the files implicitly on project build.
 
@@ -49,18 +49,18 @@ No configuration is required, it will compile the files implicitly on project bu
 ```xml
 <PropertyGroup>
   <!-- Take even more full-control -->
-  <LibSassBuilderArgs>directory "$(MSBuildProjectDirectory)"</LibSassBuilderArgs>
+  <DartSassBuilderArgs>directory "$(MSBuildProjectDirectory)"</DartSassBuilderArgs>
   <!-- msbuild output level -->
   <LibSassMessageLevel>High</LibSassMessageLevel>
 </PropertyGroup>
 ```
 
 ___
-## [.NET Global Tool](https://www.nuget.org/packages/LibSassBuilder-Tool)  
+## [.NET Global Tool](https://www.nuget.org/packages/DartSassBuilder-Tool)  
 
 Install:
 ```
-dotnet tool install --global LibSassBuilder-Tool
+dotnet tool install --global DartSassBuilder-Tool
 ```
 
 Use:
@@ -130,7 +130,7 @@ ___
 
 ## Requirements
 
-`LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
+`DartSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
 
 ## Support
 

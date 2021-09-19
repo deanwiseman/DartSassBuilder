@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using System.Collections.Generic;
 
-namespace LibSassBuilder
+namespace DartSassBuilder
 {
 	[Verb("directory", isDefault: true)]
 	public class DirectoryOptions : GenericOptions

@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>LibSassBuilder</id>
+    <id>DartSassBuilder</id>
     <version>1.6.4</version>
-    <title>LibSassBuilder</title>
+    <title>DartSassBuilder</title>
     <summary>Auto build task to compile .scss/.sass files to .css</summary>
-    <authors>Johan van Rensburg</authors>
+    <authors>Johan van Rensburg, Dean Wiseman</authors>
     <owners>Johan van Rensburg</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Compile Sass files to css on project build.</description>
-    <tags>Sass Build LibSass SassBuilder</tags>
-    <projectUrl>https://github.com/johan-v-r/LibSassBuilder</projectUrl>
-    <repository type="git" url="https://github.com/johan-v-r/LibSassBuilder.git">
+    <tags>Sass Build DartSass SassBuilder</tags>
+    <projectUrl>https://github.com/deanwiseman/DartSassBuilder</projectUrl>
+    <repository type="git" url="https://github.com/deanwiseman/DartSassBuilder.git">
     </repository>
     <license type="expression">MIT</license>
     <icon>sass.png</icon>

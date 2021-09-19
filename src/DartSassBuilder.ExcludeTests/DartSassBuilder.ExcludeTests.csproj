@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LibSassBuilder\LibSassBuilder.csproj" />
+    <ProjectReference Include="..\DartSassBuilder\DartSassBuilder.csproj" />
   </ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<Exec Command="dotnet run --project ../LibSassBuilder -e foo bar" />
+		<Exec Command="dotnet run --project ../DartSassBuilder -e foo bar" />
 	</Target>
 
 </Project>

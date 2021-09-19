@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<Version>0.1.0</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<PackAsTool>true</PackAsTool>
+		<PackageId>DartSassBuilder-Tool</PackageId>
+		<ToolCommandName>dsb</ToolCommandName>
+		<Authors>Dean Wiseman, Johan van Rensburg</Authors>
+		<Description>Compile Sass files to css from CLI. Install globally with `dotnet tool install -g DartSassBuilder-Tool`</Description>
+		<PackageProjectUrl>https://github.com/deanwiseman/DartSassBuilder</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/deanwiseman/DartSassBuilder.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>Sass Build DartSass SassBuilder</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageIcon>sass.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommandLineParser" Version="2.8.0" />
+		<PackageReference Include="DartSassHost" Version="1.0.0-preview6" />
+		<PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.12.5" />
+		<PackageReference Include="Microsoft.ClearScript.V8.Native.linux-x64" Version="7.1.5" />
+		<PackageReference Include="Microsoft.ClearScript.V8.Native.osx-x64" Version="7.1.5" />
+		<PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" Version="7.1.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\package\sass.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
+
+</Project>

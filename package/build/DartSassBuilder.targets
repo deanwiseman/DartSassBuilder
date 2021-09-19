@@ -1,10 +1,10 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <_LibSassHashCacheFile>$(IntermediateOutputPath)$(MSBuildProjectFile).LibSassBuilder.cache</_LibSassHashCacheFile>
+    <_LibSassHashCacheFile>$(IntermediateOutputPath)$(MSBuildProjectFile).DartSassBuilder.cache</_LibSassHashCacheFile>
     <_LibSassHashChanged>false</_LibSassHashChanged>
     <LibSassShouldBuildBasedOnSassFiles>false</LibSassShouldBuildBasedOnSassFiles>
-    <LibSassShouldBuildBasedOnSassFiles Condition=" '$(LibSassBuilderArgs)'=='' ">true</LibSassShouldBuildBasedOnSassFiles>
+    <LibSassShouldBuildBasedOnSassFiles Condition=" '$(DartSassBuilderArgs)'=='' ">true</LibSassShouldBuildBasedOnSassFiles>
   </PropertyGroup>
   
 <!--
@@ -31,7 +31,7 @@
   This target calculates the hash of all files (only filename & modification timestamp, so no disk access is needed)
   Outputs:
      LibSassShouldBuildBasedOnSassFiles = true if hash has changed
-     LibSassBuilderDependencyHash the new hash
+     DartSassBuilderDependencyHash the new hash
 -->
   <Target Name="LibSass_DetermineBuildNeeded"  
           BeforeTargets="BeforeBuild"  
@@ -44,7 +44,7 @@
 
     <!-- calculate hash over files & over relevant settings -->
     <Hash ItemsToHash="$(_LibSass_HashFiles)-$(LibSassOutputStyle)">
-      <Output TaskParameter="HashResult" PropertyName="LibSassBuilderDependencyHash" />
+      <Output TaskParameter="HashResult" PropertyName="DartSassBuilderDependencyHash" />
     </Hash>
 
     <ReadLinesFromFile
@@ -52,20 +52,20 @@
         Condition="Exists('$(_LibSassHashCacheFile)')">
       <Output
           TaskParameter="Lines"
-          ItemName="OldLibSassBuilderDependencyHash"/>
+          ItemName="OldDartSassBuilderDependencyHash"/>
     </ReadLinesFromFile>
 
     <PropertyGroup>
-      <_LibSassHashChanged Condition=" '$(LibSassBuilderDependencyHash)' != '@(OldLibSassBuilderDependencyHash)' ">true</_LibSassHashChanged>
+      <_LibSassHashChanged Condition=" '$(DartSassBuilderDependencyHash)' != '@(OldDartSassBuilderDependencyHash)' ">true</_LibSassHashChanged>
     </PropertyGroup>
     
-    <Message Text="Sass hash New = $(LibSassBuilderDependencyHash)" Importance="$(LibSassMessageLevel)" />
-    <Message Text="Sass hash Old = @(OldLibSassBuilderDependencyHash)" Importance="$(LibSassMessageLevel)" />
+    <Message Text="Sass hash New = $(DartSassBuilderDependencyHash)" Importance="$(LibSassMessageLevel)" />
+    <Message Text="Sass hash Old = @(OldDartSassBuilderDependencyHash)" Importance="$(LibSassMessageLevel)" />
     <Message Text="Sass changed  = $(_LibSassHashChanged)" Importance="$(LibSassMessageLevel)" />
   </Target>
   
 <!-- 
-  Determines LibSassBuilderArgs based on the SassFile-items
+  Determines DartSassBuilderArgs based on the SassFile-items
 -->
   <Target Name="LibSass_BuildArgsFromFileList" 
           DependsOnTargets="LibSass_DetermineBuildNeeded"
@@ -73,7 +73,7 @@
           Condition="'$(_LibSassHashChanged)-$(LibSassShouldBuildBasedOnSassFiles)' == 'true-true' ">
     <PropertyGroup>
       <_SassFileList>@(SassFilesToCompile->'&quot;%(FullPath)&quot;', ' ')</_SassFileList> <!-- all valid files, space seperated, surrounded with quotes -->
-      <LibSassBuilderArgs>files $(_SassFileList) --outputstyle $(LibSassOutputStyle) --level $(LibSassOutputLevel)</LibSassBuilderArgs>
+      <DartSassBuilderArgs>files $(_SassFileList) --outputstyle $(LibSassOutputStyle) --level $(LibSassOutputLevel)</DartSassBuilderArgs>
     </PropertyGroup>
     <Message Text="Converted SassFile list to argument" Importance="$(LibSassMessageLevel)" />
   </Target>
@@ -84,10 +84,10 @@
   <Target Name="LibSass_Build" 
           DependsOnTargets="LibSass_BuildArgsFromFileList"
           BeforeTargets="BeforeBuild"  
-          Condition="'$(LibSassBuilderArgs)' != ''  ">
+          Condition="'$(DartSassBuilderArgs)' != ''  ">
     <Message Text="Invoking sass preprocessor..." Importance="$(LibSassMessageLevel)" />
 
-    <Exec Command="dotnet &quot;$(SassExe)&quot; $(LibSassBuilderArgs) "/>
+    <Exec Command="dotnet &quot;$(SassExe)&quot; $(DartSassBuilderArgs) "/>
   </Target>
 
 <!-- 
@@ -100,7 +100,7 @@
     <Message Text="Sass hash: saving new..." Importance="$(LibSassMessageLevel)" />
 
     <WriteLinesToFile File="$(_LibSassHashCacheFile)" 
-                      Lines="$(LibSassBuilderDependencyHash)" 
+                      Lines="$(DartSassBuilderDependencyHash)" 
                       Overwrite="True" 
                       WriteOnlyWhenDifferent="True" />
   </Target>

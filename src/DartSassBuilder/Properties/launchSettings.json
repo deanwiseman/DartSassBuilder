@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DartSassBuilder": {
+      "commandName": "Project",
+      "commandLineArgs": "../../../../DartSassBuilder.Tests"
+    }
+  }
+}

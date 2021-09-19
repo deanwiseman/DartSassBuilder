@@ -1,9 +1,9 @@
 using System.IO;
 using Xunit;
 
-namespace LibSassBuilder.DirectoryTests
+namespace DartSassBuilder.DirectoryTests
 {
-	// This project is configured to run LibSassBuilder in LibSassBuilder.DirectoryTests.csproj within ./logs directory
+	// This project is configured to run DartSassBuilder in DartSassBuilder.DirectoryTests.csproj within ./logs directory
 	public class DirectoryTests
 	{
 		private readonly string _fileDirectory;

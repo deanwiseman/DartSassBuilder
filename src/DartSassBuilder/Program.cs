@@ -1,14 +1,16 @@
 ﻿using CommandLine;
-using LibSassHost;
+using DartSassHost;
+using DartSassHost.Helpers;
+using JavaScriptEngineSwitcher.V8;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LibSassBuilder
+namespace DartSassBuilder
 {
-	class Program
+    class Program
 	{
         static async Task Main(string[] args)
 		{
@@ -90,14 +92,38 @@ namespace LibSassBuilder
 
 				WriteVerbose($"Processing: {fileInfo.FullName}");
 
-				var result = SassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
+				try
+                {
+					using (var sassCompiler = new SassCompiler(new V8JsEngineFactory()))
+					{
+						var result = sassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
 
-				var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
+						var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
 
-				if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
-					continue;
+						if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
+							continue;
 
-				await File.WriteAllTextAsync(newFile, result.CompiledContent);
+						await File.WriteAllTextAsync(newFile, result.CompiledContent);
+					}
+                }
+				catch (SassCompilerLoadException e)
+				{
+					Console.WriteLine("During loading of Sass compiler an error occurred. See details:");
+					Console.WriteLine();
+					Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
+				}
+				catch (SassCompilationException e)
+				{
+					Console.WriteLine("During compilation of SCSS code an error occurred. See details:");
+					Console.WriteLine();
+					Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
+				}
+				catch (SassException e)
+				{
+					Console.WriteLine("During working of Sass compiler an unknown error occurred. See details:");
+					Console.WriteLine();
+					Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
+				}
 			}
 		}
 

@@ -1,12 +1,7 @@
 ﻿using CommandLine;
-using LibSassHost;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DartSassHost;
 
-namespace LibSassBuilder
+namespace DartSassBuilder
 {
     public abstract class GenericOptions
     {
