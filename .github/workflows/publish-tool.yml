@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
     paths: 
-    - 'src/LibSassBuilder/**'
+    - 'src/DartSassBuilder/**'
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet pack
-      run: dotnet pack LibSassBuilder -o 'nuget-tool-package'
+      run: dotnet pack DartSassBuilder -o 'nuget-tool-package'
   
     - uses: actions/upload-artifact@v2.2.1
       with:

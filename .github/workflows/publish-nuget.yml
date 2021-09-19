@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
     paths: 
-    - 'package/LibSassBuilder.nuspec'
+    - 'package/DartSassBuilder.nuspec'
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet publish
-      run: dotnet publish -c Release -o ..\package\tool\ .\LibSassBuilder\
+      run: dotnet publish -c Release -o ..\package\tool\ .\DartSassBuilder\
     
     - name: Setup NuGet.exe
       # You may pin to the exact commit or the version.
@@ -43,7 +43,7 @@ jobs:
         #nuget-api-key-source: # optional
     
     - name: NuGet pack
-      run: nuget pack '../package/LibSassBuilder.nuspec' -OutputDirectory 'nuget-package'
+      run: nuget pack '../package/DartSassBuilder.nuspec' -OutputDirectory 'nuget-package'
       
     - uses: actions/upload-artifact@v2.2.1
       with:
