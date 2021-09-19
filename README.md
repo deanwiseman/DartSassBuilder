@@ -1,13 +1,10 @@
 # DartSassBuilder
 
-> Inspired by [Delegate.SassBuilder](https://github.com/delegateas/Delegate.SassBuilder) and [LibSassHost](https://github.com/Taritsyn/LibSassHost)
+> A dart-compiled version of [LibSassBuilder](https://github.com/johan-v-r/LibSassBuilder), using [DartSassHost](https://github.com/Taritsyn/DartSassHost)
 
 Build | NuGet Package | .NET Global Tool
 ---|---|---
-![Build](https://github.com/johan-v-r/DartSassBuilder/workflows/Build/badge.svg) | [![Nuget](https://img.shields.io/nuget/v/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder/) | [![.NET Tool](https://img.shields.io/nuget/v/DartSassBuilder-Tool)](https://www.nuget.org/packages/DartSassBuilder-Tool/) 
-
-
-![DartSassBuilder](https://raw.githubusercontent.com/johan-v-r/DartSassBuilder/main/package/sass.png)
+![Build](https://github.com/deanwiseman/DartSassBuilder/workflows/Build/badge.svg) | [![Nuget](https://img.shields.io/nuget/v/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder/) | [![.NET Tool](https://img.shields.io/nuget/v/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder) 
 
 ## [Nuget Package](https://www.nuget.org/packages/DartSassBuilder) 
 
@@ -20,12 +17,12 @@ No configuration is required, it will compile the files implicitly on project bu
 ```xml
 <PropertyGroup>
   <!-- outputstyle option -->
-  <LibSassOutputStyle>compressed</LibSassOutputStyle>
-  <LibSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</LibSassOutputStyle>
+  <DartSassOutputStyle>compressed</LibSassOutputStyle>
+  <DartSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</LibSassOutputStyle>
   <!-- level option -->
-  <LibSassOutputLevel>verbose</LibSassOutputLevel>
+  <DartSassOutputLevel>verbose</LibSassOutputLevel>
   <!-- msbuild output level -->
-  <LibSassMessageLevel>High</LibSassMessageLevel>
+  <DartSassMessageLevel>High</LibSassMessageLevel>
 </PropertyGroup>
 ```
 
@@ -39,8 +36,8 @@ No configuration is required, it will compile the files implicitly on project bu
 
 <ItemGroup>
   <!-- add files manually -->
-  <SassFile Include="Vendor/**/*.scss" /> 
-  <SassFile Include="Styles/**/*.scss" Exclude="Styles/unused/**" />
+  <DartFile Include="Vendor/**/*.scss" /> 
+  <DartFile Include="Styles/**/*.scss" Exclude="Styles/unused/**" />
 </ItemGroup>
 ```
 
@@ -56,19 +53,19 @@ No configuration is required, it will compile the files implicitly on project bu
 ```
 
 ___
-## [.NET Global Tool](https://www.nuget.org/packages/DartSassBuilder-Tool)  
+## [.NET Global Tool](https://www.nuget.org/packages/DartSassBuilder)  
 
 Install:
 ```
-dotnet tool install --global DartSassBuilder-Tool
+dotnet tool install --global DartSassBuilder
 ```
 
 Use:
 ```
-lsb [optional-path] [options]
-lsb help
-lsb help directory
-lsb help files
+dsb [optional-path] [options]
+dsb help
+dsb help directory
+dsb help files
 ```
 
 ## Generic options 
@@ -96,9 +93,9 @@ value pos. 0     Directory in which to run. Defaults to current directory.
 Example:
 
 ```
-lsb directory
-lsb directory sources/styles -e node_modules
-lsb directory sources/styles -e node_modules -l verbose
+dsb directory
+dsb directory sources/styles -e node_modules
+dsb directory sources/styles -e node_modules -l verbose
 ```
 
 Files in the following directories are excluded by default:
@@ -123,8 +120,8 @@ value pos. 0     File(s) to process.
 Example:
 
 ```
-lsb files sources/style/a.scss sources/vendor/b.scss
-lsb files sources/style/a.scss sources/vendor/b.scss -l verbose
+dsb files sources/style/a.scss sources/vendor/b.scss
+dsb files sources/style/a.scss sources/vendor/b.scss -l verbose
 ```
 ___
 
@@ -134,12 +131,12 @@ ___
 
 ## Support
 
-The support is largely dependant on [LibSassHost](https://github.com/Taritsyn/LibSassHost)
+The support is largely dependant on [DartSassHost](https://github.com/Taritsyn/DartSassHost)
 
 This tool contains the following supporting packages:
-- LibSassHost.Native.win-x64
-- LibSassHost.Native.linux-x64
-- LibSassHost.Native.osx-x64
+- Microsoft.ClearScript.V8.Native.win-x64
+- Microsoft.ClearScript.V8.Native.linux-x64
+- Microsoft.ClearScript.V8.Native.osx-x64
 
 ## Package as nuget package
 
