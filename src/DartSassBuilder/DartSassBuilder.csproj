@@ -5,7 +5,7 @@
 		<Version>0.1.0</Version>
 		<TargetFramework>net5.0</TargetFramework>
 		<PackAsTool>true</PackAsTool>
-		<PackageId>DartSassBuilder-Tool</PackageId>
+		<PackageId>DartSassBuilder</PackageId>
 		<ToolCommandName>dsb</ToolCommandName>
 		<Authors>Dean Wiseman, Johan van Rensburg</Authors>
 		<Description>Compile Sass files to css from CLI. Install globally with `dotnet tool install -g DartSassBuilder-Tool`</Description>
