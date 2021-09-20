@@ -1,6 +1,6 @@
 # DartSassBuilder
 
-> A dart-compiled version of [LibSassBuilder](https://github.com/johan-v-r/LibSassBuilder), using [DartSassHost](https://github.com/Taritsyn/DartSassHost)
+> A dart-compiled version of [DartSassBuilder](https://github.com/johan-v-r/DartSassBuilder), using [DartSassHost](https://github.com/Taritsyn/DartSassHost)
 
 Build | NuGet Package | .NET Global Tool
 ---|---|---
@@ -17,12 +17,12 @@ No configuration is required, it will compile the files implicitly on project bu
 ```xml
 <PropertyGroup>
   <!-- outputstyle option -->
-  <DartSassOutputStyle>compressed</LibSassOutputStyle>
-  <DartSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</LibSassOutputStyle>
+  <DartSassOutputStyle>compressed</DartSassOutputStyle>
+  <DartSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</DartSassOutputStyle>
   <!-- level option -->
-  <DartSassOutputLevel>verbose</LibSassOutputLevel>
+  <DartSassOutputLevel>verbose</DartSassOutputLevel>
   <!-- msbuild output level -->
-  <DartSassMessageLevel>High</LibSassMessageLevel>
+  <DartSassMessageLevel>High</DartSassMessageLevel>
 </PropertyGroup>
 ```
 
@@ -41,14 +41,14 @@ No configuration is required, it will compile the files implicitly on project bu
 </ItemGroup>
 ```
 
-- ### Or ignore all previous options (except for `<LibSassMessageLevel>`) and determine the arguments to the tool yourself
+- ### Or ignore all previous options (except for `<DartSassMessageLevel>`) and determine the arguments to the tool yourself
 
 ```xml
 <PropertyGroup>
   <!-- Take even more full-control -->
   <DartSassBuilderArgs>directory "$(MSBuildProjectDirectory)"</DartSassBuilderArgs>
   <!-- msbuild output level -->
-  <LibSassMessageLevel>High</LibSassMessageLevel>
+  <DartSassMessageLevel>High</DartSassMessageLevel>
 </PropertyGroup>
 ```
 
