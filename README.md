@@ -36,8 +36,8 @@ No configuration is required, it will compile the files implicitly on project bu
 
 <ItemGroup>
   <!-- add files manually -->
-  <DartFile Include="Vendor/**/*.scss" /> 
-  <DartFile Include="Styles/**/*.scss" Exclude="Styles/unused/**" />
+  <SassFile Include="Vendor/**/*.scss" /> 
+  <SassFile Include="Styles/**/*.scss" Exclude="Styles/unused/**" />
 </ItemGroup>
 ```
 
