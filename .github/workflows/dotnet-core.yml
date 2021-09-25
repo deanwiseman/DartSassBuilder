@@ -38,7 +38,7 @@ jobs:
       - name: Build DartSassBuilder.DirectoryTests
         run: dotnet build ./DartSassBuilder.DirectoryTests --no-restore
       - name: Build DartSassBuilder.ExcludeTests
-        run: dotnet build ./DartSassBuilder.ExcludeTests --no-restore
+        run: dotnet build ./DartSassBuilder.ExcludeTests --no-restore --verbosity diagnostic
       - name: Build DartSassBuilder.Tests
         run: dotnet build ./DartSassBuilder.Tests --no-restore
       - name: Test
