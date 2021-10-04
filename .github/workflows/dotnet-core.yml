@@ -32,12 +32,12 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
       - name: Build DartSassBuilder
-        run: dotnet build ./DartSassBuilder --no-restore -maxcpucount:1
+        run: dotnet build ./DartSassBuilder --no-restore -maxcpucount:1 nr:false
       - name: Build DartSassBuilder.DirectoryTests
-        run: dotnet build ./DartSassBuilder.DirectoryTests --no-restore -maxcpucount:1
+        run: dotnet build ./DartSassBuilder.DirectoryTests --no-restore -maxcpucount:1 nr:false
       - name: Build DartSassBuilder.ExcludeTests
-        run: dotnet build ./DartSassBuilder.ExcludeTests --no-restore -maxcpucount:1
+        run: dotnet build ./DartSassBuilder.ExcludeTests --no-restore -maxcpucount:1 nr:false
       - name: Build DartSassBuilder.Tests
-        run: dotnet build ./DartSassBuilder.Tests --no-restore -maxcpucount:1
+        run: dotnet build ./DartSassBuilder.Tests --no-restore -maxcpucount:1 nr:false
       - name: Test
         run: dotnet test --no-restore --verbosity normal
