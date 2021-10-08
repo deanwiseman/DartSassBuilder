@@ -81,8 +81,10 @@ namespace DartSassBuilder
 
         async Task CompileFilesAsync(IEnumerable<string> sassFiles)
         {
-            using (var sassCompiler = new SassCompiler(new V8JsEngineFactory()))
+            try
             {
+                using var sassCompiler = new SassCompiler(new V8JsEngineFactory());
+
                 foreach (var file in sassFiles)
                 {
                     var fileInfo = new FileInfo(file);
@@ -94,38 +96,33 @@ namespace DartSassBuilder
 
                     WriteVerbose($"Processing: {fileInfo.FullName}");
 
-                    try
-                    {
-                        var result = sassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
+                    var result = sassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
 
-                        var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
+                    var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
 
-                        if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
-                            continue;
+                    if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
+                        continue;
 
-                        await File.WriteAllTextAsync(newFile, result.CompiledContent);
-
-                    }
-
-                    catch (SassCompilerLoadException e)
-                    {
-                        Console.WriteLine("During loading of Sass compiler an error occurred. See details:");
-                        Console.WriteLine();
-                        Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
-                    }
-                    catch (SassCompilationException e)
-                    {
-                        Console.WriteLine("During compilation of SCSS code an error occurred. See details:");
-                        Console.WriteLine();
-                        Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
-                    }
-                    catch (SassException e)
-                    {
-                        Console.WriteLine("During working of Sass compiler an unknown error occurred. See details:");
-                        Console.WriteLine();
-                        Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
-                    }
+                    await File.WriteAllTextAsync(newFile, result.CompiledContent);
                 }
+            }
+            catch (SassCompilerLoadException e)
+            {
+                Console.WriteLine("During loading of Sass compiler an error occurred. See details:");
+                Console.WriteLine();
+                Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
+            }
+            catch (SassCompilationException e)
+            {
+                Console.WriteLine("During compilation of SCSS code an error occurred. See details:");
+                Console.WriteLine();
+                Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
+            }
+            catch (SassException e)
+            {
+                Console.WriteLine("During working of Sass compiler an unknown error occurred. See details:");
+                Console.WriteLine();
+                Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
             }
         }
 
