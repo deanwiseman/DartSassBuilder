@@ -1,6 +1,6 @@
 # DartSassBuilder
 
-> A dart-compiled version of [DartSassBuilder](https://github.com/johan-v-r/DartSassBuilder), using [DartSassHost](https://github.com/Taritsyn/DartSassHost)
+> A dart-compiled version of [LibSassBuilder](https://github.com/johan-v-r/LibSassBuilder), using [DartSassHost](https://github.com/Taritsyn/DartSassHost)
 
 Build | NuGet Package | .NET Global Tool
 ---|---|---
