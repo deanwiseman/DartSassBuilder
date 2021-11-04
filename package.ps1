@@ -5,9 +5,9 @@ param (
     [string] $Version 
 )
 
-$projectFile = "$PSScriptRoot/src/LibSassBuilder/LibSassBuilder.csproj"
-$nuspecProjectFile = "$PSScriptRoot/package/LibSassBuilder.csproj"
-$nuspecFile = "$PSScriptRoot/package/LibSassBuilder.nuspec"
+$projectFile = "$PSScriptRoot/src/DartSassBuilder/DartSassBuilder.csproj"
+$nuspecProjectFile = "$PSScriptRoot/package/DartSassBuilder.csproj"
+$nuspecFile = "$PSScriptRoot/package/DartSassBuilder.nuspec"
 
 & dotnet build $projectFile -p:Version=$Version -c Release -o "$PSScriptRoot/package/tool"
 & dotnet pack $projectFile -p:Version=$Version -c Release -o $PackageDir
