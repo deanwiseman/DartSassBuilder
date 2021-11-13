@@ -127,7 +127,7 @@ ___
 
 ## Requirements
 
-`DartSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
+`DartSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 6](https://dotnet.microsoft.com/download/dotnet/6.0) installed on the machine. (.NET 5 required with `0.1.x-beta`)
 
 ## Support
 
