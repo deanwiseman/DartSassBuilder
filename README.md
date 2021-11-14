@@ -4,7 +4,7 @@
 
 Build | NuGet Package | .NET Global Tool
 ---|---|---
-![Build](https://github.com/deanwiseman/DartSassBuilder/workflows/Build/badge.svg) | [![Nuget](https://img.shields.io/nuget/v/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder/) | [![.NET Tool](https://img.shields.io/nuget/v/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder-Tool) 
+![Build](https://github.com/deanwiseman/DartSassBuilder/workflows/Build/badge.svg) | [![Nuget](https://img.shields.io/nuget/vpre/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder/) | [![.NET Tool](https://img.shields.io/nuget/vpre/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder-Tool) 
 
 ## [Nuget Package](https://www.nuget.org/packages/DartSassBuilder) 
 
