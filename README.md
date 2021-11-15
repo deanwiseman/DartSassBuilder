@@ -2,11 +2,11 @@
 
 > A dart-compiled version of [LibSassBuilder](https://github.com/johan-v-r/LibSassBuilder), using [DartSassHost](https://github.com/Taritsyn/DartSassHost)
 
-Build | NuGet Package | .NET Global Tool
----|---|---
-![Build](https://github.com/deanwiseman/DartSassBuilder/workflows/Build/badge.svg) | [![Nuget](https://img.shields.io/nuget/vpre/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder/) | [![.NET Tool](https://img.shields.io/nuget/vpre/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder-Tool) 
+| Build                                                                              | NuGet Package                                                                                                  | .NET Global Tool                                                                                                       |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| ![Build](https://github.com/deanwiseman/DartSassBuilder/workflows/Build/badge.svg) | [![Nuget](https://img.shields.io/nuget/vpre/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder/) | [![.NET Tool](https://img.shields.io/nuget/vpre/DartSassBuilder)](https://www.nuget.org/packages/DartSassBuilder-Tool) |
 
-## [Nuget Package](https://www.nuget.org/packages/DartSassBuilder) 
+## [Nuget Package](https://www.nuget.org/packages/DartSassBuilder)
 
 `DartSassBuilder` NuGet package adds a build task to compile Sass files to `.css`. It's compatible with both MSBuild (VS) and `dotnet build`.
 
@@ -31,12 +31,12 @@ No configuration is required, it will compile the files implicitly on project bu
 ```xml
 <PropertyGroup>
   <!-- take full-control -->
-  <EnableDefaultSassItems>false</EnableDefaultSassItems>  
+  <EnableDefaultSassItems>false</EnableDefaultSassItems>
 </PropertyGroup>
 
 <ItemGroup>
   <!-- add files manually -->
-  <SassFile Include="Vendor/**/*.scss" /> 
+  <SassFile Include="Vendor/**/*.scss" />
   <SassFile Include="Styles/**/*.scss" Exclude="Styles/unused/**" />
 </ItemGroup>
 ```
@@ -52,15 +52,18 @@ No configuration is required, it will compile the files implicitly on project bu
 </PropertyGroup>
 ```
 
-___
-## [.NET Global Tool](https://www.nuget.org/packages/DartSassBuilder)  
+---
+
+## [.NET Global Tool](https://www.nuget.org/packages/DartSassBuilder)
 
 Install:
+
 ```
 dotnet tool install --global DartSassBuilder
 ```
 
 Use:
+
 ```
 dsb [optional-path] [options]
 dsb help
@@ -68,9 +71,9 @@ dsb help directory
 dsb help files
 ```
 
-## Generic options 
+## Generic options
 
- ```
+```
 -l, --level      Specify the level of output (silent, default, verbose)
 
 --outputstyle    Specify the style of output (compressed, condensed, nested, expanded)
@@ -99,11 +102,11 @@ dsb directory sources/styles -e node_modules -l verbose
 ```
 
 Files in the following directories are excluded by default:
- - `bin`
- - `obj`
- - `logs`
- - `node_modules`
 
+- `bin`
+- `obj`
+- `logs`
+- `node_modules`
 
 ## Files command (default)
 
@@ -123,7 +126,8 @@ Example:
 dsb files sources/style/a.scss sources/vendor/b.scss
 dsb files sources/style/a.scss sources/vendor/b.scss -l verbose
 ```
-___
+
+---
 
 ## Requirements
 
@@ -134,6 +138,7 @@ ___
 The support is largely dependant on [DartSassHost](https://github.com/Taritsyn/DartSassHost)
 
 This tool contains the following supporting packages:
+
 - Microsoft.ClearScript.V8.Native.win-x64
 - Microsoft.ClearScript.V8.Native.linux-x64
 - Microsoft.ClearScript.V8.Native.osx-x64
