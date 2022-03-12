@@ -27,23 +27,23 @@ namespace DartSassBuilder
                 {
                     switch (o)
                     {
-                        case DirectoryOptions directory:
+                        case DirectoryOptions directoryOptions:
                             {
-                                var program = new Program(directory);
+                                var program = new Program(directoryOptions);
 
-                                program.WriteLine($"Sass compile directory: {directory.Directory}");
+                                program.WriteLine($"Sass compile directory: {directoryOptions.Directory}");
 
-                                await program.CompileDirectoriesAsync(directory.Directory, directory.ExcludedDirectories);
+                                await program.CompileDirectoriesAsync(directoryOptions.Directory, directoryOptions.ExcludedDirectories);
 
                                 program.WriteLine("Sass files compiled");
                             }
                             break;
-                        case FilesOptions file:
+                        case FilesOptions fileOptions:
                             {
-                                var program = new Program(file);
+                                var program = new Program(fileOptions);
                                 program.WriteLine($"Sass compile files");
 
-                                await program.CompileFilesAsync(file.Files);
+                                await program.CompileFilesAsync(fileOptions.Files);
 
                                 program.WriteLine("Sass files compiled");
                             }
