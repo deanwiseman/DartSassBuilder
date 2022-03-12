@@ -11,8 +11,21 @@ namespace DartSassBuilder
 
 		[Option('e', "exclude", Required = false, HelpText = "Specify explicit directories to exclude. Overrides the default.", Default = new[] { "bin", "obj", "logs", "node_modules" })]
 		public IEnumerable<string> ExcludedDirectories { get; set; }
-
-		[Option('o', "output-path", Required = false, HelpText = "Specify an output directory to place the compiled files into.", Default = "output-folder")]
-		public string OutputPath { get; set; }
+		
+		private string _outputPath;
+		
+		[Option('o', "output", Required = false, HelpText = "Specify an output directory to place the compiled files into.", Default = "output-folder")]
+		public string OutputPath 
+		{
+			get { return _outputPath; }
+			set 
+			{ 
+				_outputPath = value;
+				if (!string.IsNullOrWhiteSpace(value))
+					_isOutputPathSpecified = true;
+            }
+		}
+		private bool _isOutputPathSpecified;
+		public bool IsOutputPathSpecified => _isOutputPathSpecified;
 	}
 }
