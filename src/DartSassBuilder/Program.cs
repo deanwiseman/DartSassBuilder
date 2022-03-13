@@ -4,6 +4,7 @@ using DartSassHost.Helpers;
 using JavaScriptEngineSwitcher.V8;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace DartSassBuilder
 
                                 program.WriteLine($"Sass compile directory: {directoryOptions.Directory}");
 
-                                await program.CompileDirectoriesAsync(directoryOptions.Directory, directoryOptions.ExcludedDirectories);
+                                await program.CompileDirectoriesAsync(directoryOptions.Directory, directoryOptions.ExcludedDirectories, directoryOptions.OutputPath);
 
                                 program.WriteLine("Sass files compiled");
                             }
@@ -41,9 +42,10 @@ namespace DartSassBuilder
                         case FilesOptions fileOptions:
                             {
                                 var program = new Program(fileOptions);
+
                                 program.WriteLine($"Sass compile files");
 
-                                await program.CompileFilesAsync(fileOptions.Files);
+                                await program.CompileFilesAsync(fileOptions.Files, "output-path");
 
                                 program.WriteLine("Sass files compiled");
                             }
@@ -61,12 +63,12 @@ namespace DartSassBuilder
             Options = options;
         }
 
-        async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)
+        async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories, string outputPath)
         {
             var sassFiles = Directory.EnumerateFiles(directory)
                 .Where(file => file.EndsWith(".scss", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".sass", StringComparison.OrdinalIgnoreCase));
 
-            await CompileFilesAsync(sassFiles);
+            await CompileFilesAsync(sassFiles, outputPath);
 
             var subDirectories = Directory.EnumerateDirectories(directory);
             foreach (var subDirectory in subDirectories)
@@ -75,11 +77,11 @@ namespace DartSassBuilder
                 if (excludedDirectories.Any(dir => string.Equals(dir, directoryName, StringComparison.OrdinalIgnoreCase)))
                     continue;
 
-                await CompileDirectoriesAsync(subDirectory, excludedDirectories);
+                await CompileDirectoriesAsync(subDirectory, excludedDirectories, outputPath);
             }
         }
 
-        async Task CompileFilesAsync(IEnumerable<string> sassFiles)
+        async Task CompileFilesAsync(IEnumerable<string> sassFiles, string outputPath)
         {
             try
             {
@@ -98,12 +100,30 @@ namespace DartSassBuilder
 
                     var result = sassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
 
-                    var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
+                    // this technically specifies the new output path
+                    // i.e: the current path of the file but with the extention renamed to "CSS"
+                    // for output path support: we want the exact filename, but with the path as specified in output path
 
-                    if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
+                    if (!string.IsNullOrWhiteSpace(outputPath))
+                    {
+                        //var path = Path.Combine(Directory.GetCurrentDirectory(), outputPath);
+                        if (Directory.Exists(outputPath))
+                        {
+                            var dirInfo = new DirectoryInfo(outputPath);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException();
+                        }
+                    }
+                    //var newFilePath = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
+                    var newFilePath = Path.Combine(new DirectoryInfo(outputPath).FullName, fileInfo.Name.Replace(fileInfo.Extension, ".css"));
+                    Debug.Assert(string.IsNullOrEmpty(newFilePath));
+
+                    if (File.Exists(newFilePath) && result.CompiledContent == await File.ReadAllTextAsync(newFilePath))
                         continue;
 
-                    await File.WriteAllTextAsync(newFile, result.CompiledContent);
+                    await File.WriteAllTextAsync(newFilePath, result.CompiledContent);
                 }
             }
             catch (SassCompilerLoadException e)

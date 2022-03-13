@@ -14,7 +14,7 @@ namespace DartSassBuilder
 		
 		private string _outputPath;
 		
-		[Option('o', "output", Required = false, HelpText = "Specify an output directory to place the compiled files into.", Default = "output-folder")]
+		[Option('o', "output", Required = false, HelpText = "Specify an output directory to place the compiled files into.")]
 		public string OutputPath 
 		{
 			get { return _outputPath; }
