@@ -142,6 +142,7 @@ This tool contains the following supporting packages:
 - Microsoft.ClearScript.V8.Native.win-x64
 - Microsoft.ClearScript.V8.Native.linux-x64
 - Microsoft.ClearScript.V8.Native.osx-x64
+- Microsoft.ClearScript.V8.Native.osx-arm64
 
 ## Package as nuget package
 
