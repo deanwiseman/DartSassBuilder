@@ -1,8 +1,8 @@
-{
-  "profiles": {
-    "DartSassBuilder": {
-      "commandName": "Project",
-      "commandLineArgs": "../../../../DartSassBuilder.Tests"
-    }
-  }
-}
+//{
+//  "profiles": {
+//    "DartSassBuilder": {
+//      "commandName": "Project",
+//      "commandLineArgs": "../../../../DartSassBuilder.Tests"
+//    }
+//  }
+//}
