@@ -22,7 +22,7 @@
 		<PackageReference Include="DartSassHost" Version="1.0.0-preview7" />
 		<PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.17.3" />
 		<PackageReference Include="Microsoft.ClearScript.V8.Native.linux-x64" Version="7.2.3" />
-		<PackageReference Include="Microsoft.ClearScript.V8.Native.osx-x64" Version="7.2.3" />
+		<PackageReference Include="Microsoft.ClearScript.V8.Native.osx-x64" Version="7.3.1" />
 		<PackageReference Include="Microsoft.ClearScript.V8.Native.osx-arm64" Version="7.2.3" />
 		<PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" Version="7.2.3" />
 	</ItemGroup>
