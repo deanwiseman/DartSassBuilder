@@ -33,11 +33,5 @@ jobs:
         run: dotnet restore
       - name: Build DartSassBuilder
         run: dotnet build ./DartSassBuilder --no-restore
-      - name: Build DartSassBuilder.DirectoryTests
-        run: dotnet build ./DartSassBuilder.DirectoryTests --no-restore
-      - name: Build DartSassBuilder.ExcludeTests
-        run: dotnet build ./DartSassBuilder.ExcludeTests --no-restore
-      - name: Build DartSassBuilder.Tests
-        run: dotnet build ./DartSassBuilder.Tests --no-restore
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
+      - name: Run Tests
+        run: dotnet test --no-restore --verbosity normal --blame
