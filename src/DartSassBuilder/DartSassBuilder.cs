@@ -81,7 +81,7 @@ namespace DartSassBuilder
         {
             try
             {
-                using var sassCompiler = new SassCompiler(() => new V8JsEngineFactory().CreateEngine());
+                using var sassCompiler = new SassCompiler();
 
                 foreach (var file in sassFiles)
                 {
