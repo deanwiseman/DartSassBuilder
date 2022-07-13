@@ -100,7 +100,7 @@ namespace DartSassBuilder
 
                     var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
 
-                    if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
+                    if (File.Exists(newFile) && RemoveEndOfLines(result.CompiledContent) == RemoveEndOfLines(await File.ReadAllTextAsync(newFile)))
                         continue;
 
                     await File.WriteAllTextAsync(newFile, result.CompiledContent);
@@ -141,5 +141,8 @@ namespace DartSassBuilder
                 Console.WriteLine(line);
             }
         }
+        
+        static string RemoveEndOfLines(string s)
+            => string.Join("", string.Split(new[] { '\r' }, s, StringSplitOptions.RemoveEmptyEntries));
     }
 }
