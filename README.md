@@ -23,6 +23,8 @@ No configuration is required, it will compile the files implicitly on project bu
   <DartSassOutputLevel>verbose</DartSassOutputLevel>
   <!-- msbuild output level -->
   <DartSassMessageLevel>High</DartSassMessageLevel>
+  <!-- include paths for imports -->
+  <DartSassIncludePaths>node_modules</DartSassIncludePaths>
 </PropertyGroup>
 ```
 
@@ -84,13 +86,15 @@ dsb help files
 Scans a directory recursively to generate .css files
 
 ```
--e, --exclude    (Default: bin obj logs node_modules) Specify explicit directories to exclude. Overrides the default.
+-e, --exclude          (Default: bin obj logs node_modules) Specify explicit directories to exclude. Overrides the default.
 
---help           Display this help screen.
+-i, --include-paths    (Default: node_modules) List of paths that library can look in to attempt to resolve @import declarations. Overrides the default.
 
---version        Display version information.
+--help                 Display this help screen.
 
-value pos. 0     Directory in which to run. Defaults to current directory.
+--version              Display version information.
+
+value pos. 0           Directory in which to run. Defaults to current directory.
 ```
 
 Example:
@@ -113,11 +117,13 @@ Files in the following directories are excluded by default:
 Processes the files given on the commandline
 
 ```
---help           Display this help screen.
+-i, --include-paths    (Default: node_modules) List of paths that library can look in to attempt to resolve @import declarations. Overrides the default.
 
---version        Display version information.
+--help                 Display this help screen.
 
-value pos. 0     File(s) to process.
+--version              Display version information.
+
+value pos. 0           File(s) to process.
 ```
 
 Example:
