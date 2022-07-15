@@ -59,6 +59,10 @@ namespace DartSassBuilder
         public Program(GenericOptions options)
         {
             Options = options;
+            if (Options.IncludePaths != null)
+            {
+                Options.SassCompilationOptions.IncludePaths = Options.IncludePaths.ToList();
+            }
         }
 
         async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)

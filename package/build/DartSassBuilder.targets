@@ -72,8 +72,11 @@
           BeforeTargets="BeforeBuild"  
           Condition="'$(_DartSassHashChanged)-$(DartSassShouldBuildBasedOnSassFiles)' == 'true-true' ">
     <PropertyGroup>
+      <DartSassBuilderArgs>$(DartSassBuilderArgs) --outputstyle $(DartSassOutputStyle)</DartSassBuilderArgs>
+      <DartSassBuilderArgs>$(DartSassBuilderArgs) --level $(DartSassOutputLevel)</DartSassBuilderArgs>
+      <DartSassBuilderArgs Condition=" '$(DartSassIncludePaths)'!='' ">$(DartSassBuilderArgs) --include-paths $([System.String]::Copy('$(DartSassIncludePaths)').Replace(';', ' '))</DartSassBuilderArgs>
       <_SassFileList>@(SassFilesToCompile->'&quot;%(FullPath)&quot;', ' ')</_SassFileList> <!-- all valid files, space seperated, surrounded with quotes -->
-      <DartSassBuilderArgs>files $(_SassFileList) --outputstyle $(DartSassOutputStyle) --level $(DartSassOutputLevel)</DartSassBuilderArgs>
+      <DartSassBuilderArgs>files $(_SassFileList)$(DartSassBuilderArgs)</DartSassBuilderArgs>
     </PropertyGroup>
     <Message Text="Converted SassFile list to argument" Importance="$(DartSassMessageLevel)" />
   </Target>
