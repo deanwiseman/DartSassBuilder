@@ -7,6 +7,11 @@
     <DartSassShouldBuildBasedOnSassFiles Condition=" '$(DartSassBuilderArgs)'=='' ">true</DartSassShouldBuildBasedOnSassFiles>
   </PropertyGroup>
   
+  <ItemGroup>
+    <!-- filter out variable files that don't get compiled -->
+    <SassFilesToCompile Include="@(SassFile)" Exclude="**/_*.scss;**/_*.sass"></SassFilesToCompile>
+  </ItemGroup>
+  
 <!--
   Target used by dotnet-watch to resolve additional items.
   Add target to CustomCollectWatchItems

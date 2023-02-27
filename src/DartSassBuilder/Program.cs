@@ -100,7 +100,7 @@ namespace DartSassBuilder
 
                     var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
 
-                    if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
+                    if (File.Exists(newFile) && result.CompiledContent.ReplaceLineEndings() == (await File.ReadAllTextAsync(newFile)).ReplaceLineEndings())
                         continue;
 
                     await File.WriteAllTextAsync(newFile, result.CompiledContent);
