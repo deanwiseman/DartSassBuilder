@@ -24,7 +24,7 @@
   </ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<Exec Command="dotnet run --project ../DartSassBuilder" />
+		<Exec Command="dotnet run --project ../DartSassBuilder ./" />
 	</Target>
 
 </Project>
