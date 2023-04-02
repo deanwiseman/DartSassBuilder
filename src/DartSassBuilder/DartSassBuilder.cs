@@ -79,7 +79,7 @@ public class DartSassBuilder : IDisposable
     {
         try
         {
-            using var sassCompiler = new SassCompiler(new V8JsEngineFactory());
+            using var sassCompiler = new SassCompiler(() => new V8JsEngineFactory().CreateEngine());
 
             foreach (var file in sassFiles)
             {
@@ -96,7 +96,7 @@ public class DartSassBuilder : IDisposable
 
                 var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
 
-                if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
+                if (File.Exists(newFile) && result.CompiledContent.ReplaceLineEndings() == (await File.ReadAllTextAsync(newFile)).ReplaceLineEndings())
                     continue;
 
                 await File.WriteAllTextAsync(newFile, result.CompiledContent);
