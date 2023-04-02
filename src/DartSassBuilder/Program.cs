@@ -2,22 +2,21 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DartSassBuilder
+namespace DartSassBuilder;
+
+class Program
 {
-    class Program
+    static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
+        var cliParser = new Parser(config =>
         {
-            var cliParser = new Parser(config =>
-            {
-                config.CaseInsensitiveEnumValues = true;
-                config.AutoHelp = true;
-                config.HelpWriter = Console.Out;
-            });
+            config.CaseInsensitiveEnumValues = true;
+            config.AutoHelp = true;
+            config.HelpWriter = Console.Out;
+        });
 
-            var dsb = new DartSassBuilder(cliParser);
+        using var dartSassBuilder = new DartSassBuilder(cliParser);
 
-            await dsb.ParseArgumentsAsync(args);
-        }
+        await dartSassBuilder.ParseArgumentsAsync(args);
     }
 }
