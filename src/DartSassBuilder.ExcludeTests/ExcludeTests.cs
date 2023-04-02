@@ -1,30 +1,29 @@
 using System.IO;
 using Xunit;
 
-namespace DartSassBuilder.ExcludeTests
+namespace DartSassBuilder.ExcludeTests;
+
+// This project is configured to run DartSassBuilder in DartSassBuilder.DirectoryTests.csproj excluding foo & bar directories
+public class ExcludeTests : IClassFixture<ExcludeTestsFixture>
 {
-	// This project is configured to run DartSassBuilder in DartSassBuilder.DirectoryTests.csproj excluding foo & bar directories
-	public class ExcludeTests
+        private readonly ExcludeTestsFixture _fixture;
+
+        public ExcludeTests(ExcludeTestsFixture fixture)
 	{
-		private readonly string _fileDirectory;
+            _fixture = fixture;
+        }
 
-		public ExcludeTests()
-		{
-			_fileDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-		}
+	[Fact]
+	public void ExcludeFooFilesTest()
+	{
+		var fooFile = Path.Join(_fixture.FileDirectory, "foo/foo.css");
+		var barFile = Path.Join(_fixture.FileDirectory, "bar/bar.css");
+		var testFile = Path.Join(_fixture.FileDirectory, "test.css");
 
-		[Fact]
-		public void ExcludeFooFilesTest()
-		{
-			var fooFile = Path.Join(_fileDirectory, "foo/foo.css");
-			var barFile = Path.Join(_fileDirectory, "bar/bar.css");
-			var testFile = Path.Join(_fileDirectory, "test.css");
+		Assert.False(File.Exists(fooFile)); // excluded foo
+		Assert.False(File.Exists(barFile)); // excluded bar
+		Assert.True(File.Exists(testFile));
 
-			Assert.False(File.Exists(fooFile)); // excluded foo
-			Assert.False(File.Exists(barFile)); // excluded bar
-			Assert.True(File.Exists(testFile));
-
-			File.Delete(testFile);
-		}
+		_fixture.MarkFilesForDeletion(testFile);
 	}
 }

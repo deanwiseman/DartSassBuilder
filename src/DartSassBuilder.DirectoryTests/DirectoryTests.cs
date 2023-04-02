@@ -1,40 +1,38 @@
 using System.IO;
 using Xunit;
 
-namespace DartSassBuilder.DirectoryTests
+namespace DartSassBuilder.DirectoryTests;
+
+public class DirectoryTests : IClassFixture<DirectoryTestsFixture>
 {
-	// This project is configured to run DartSassBuilder in DartSassBuilder.DirectoryTests.csproj within ./logs directory
-	public class DirectoryTests
-	{
-		private readonly string _fileDirectory;
+    private readonly DirectoryTestsFixture _fixture;
 
-		public DirectoryTests()
-		{
-			_fileDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-		}
+    public DirectoryTests(DirectoryTestsFixture fixture)
+    {
+        _fixture = fixture;
+    }
 
-		[Fact]
-		public void ExplicitDirectoryTest()
-		{
-			var barFile = Path.Join(_fileDirectory, "foo/bar.css");
-			var binFile = Path.Join(_fileDirectory, "logs/bin/bin-file.css");
-			var logsFile = Path.Join(_fileDirectory, "logs/logs-file.css");
-			
-			Assert.False(File.Exists(barFile)); // not in ./logs directory
-			Assert.False(File.Exists(binFile)); // inside ./logs, but excluded by default nested bin folder
-			Assert.True(File.Exists(logsFile)); // inside ./logs
-			
-			File.Delete(logsFile);
-		}
+    [Fact]
+    public void ExplicitDirectoryTest()
+    {
+        var barFile = Path.Join(_fixture.FileDirectory, "foo/bar.css");
+        var binFile = Path.Join(_fixture.FileDirectory, "logs/bin/bin-file.css");
+        var logsFile = Path.Join(_fixture.FileDirectory, "logs/logs-file.css");
 
-		[Fact]
-		public void IncludedDirectoryTest()
-        {
-			var dialogsFile = Path.Join(_fileDirectory, "logs/dialogs/dialog-file.css");
+        Assert.False(File.Exists(barFile)); // not in ./logs directory
+        Assert.False(File.Exists(binFile)); // inside ./logs, but excluded by default nested bin folder
+        Assert.True(File.Exists(logsFile)); // inside ./logs
 
-			Assert.True(File.Exists(dialogsFile)); // inside ./logs/dialogs directory, but included as it doesn't explicitly match "logs"
+        _fixture.MarkFilesForDeletion(logsFile);
+    }
 
-			File.Delete(dialogsFile);
-		}
-	}
+    [Fact]
+    public void IncludedDirectoryTest()
+    {
+        var dialogsFile = Path.Join(_fixture.FileDirectory, "logs/dialogs/dialog-file.css");
+
+        Assert.True(File.Exists(dialogsFile)); // inside ./logs/dialogs directory, but included as it doesn't explicitly match "logs"
+
+        _fixture.MarkFilesForDeletion(dialogsFile);
+    }
 }

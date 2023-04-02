@@ -1,41 +1,39 @@
 using System.IO;
 using Xunit;
 
-namespace DartSassBuilder.Tests
+namespace DartSassBuilder.Tests;
+
+public class FileTests : IClassFixture<FileTestsFixture>
 {
-	// This project is configured to run DartSassBuilder in DartSassBuilder.Tests.csproj
-	public class FileTests
-	{
-		private readonly string _fileDirectory;
+    private readonly FileTestsFixture _fixture;
 
-		public FileTests()
-		{
-			_fileDirectory = Path.Join(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "test-files");
-		}
+    public FileTests(FileTestsFixture fixture)
+    {
+        _fixture = fixture;
+    }
 
-		[Theory]
-		[InlineData("test-new-format.css")]
-		[InlineData("test-indented-format.css")]
-		public void FileExistsTest(string cssFileName)
-		{
-			var cssFilePath = Path.Join(_fileDirectory, cssFileName);
+    [Theory]
+    [InlineData("test-new-format.css")]
+    [InlineData("test-indented-format.css")]
+    public void FileExistsTest(string cssFileName)
+    {
+        var cssFilePath = Path.Join(_fixture.FileDirectory, cssFileName);
 
-			Assert.True(File.Exists(cssFilePath));
+        Assert.True(File.Exists(cssFilePath));
 
-			File.Delete(cssFilePath);
-		}
+        _fixture.MarkFilesForDeletion(cssFilePath);
+    }
 
-		[Theory]
-		[InlineData("", "_ignored.css")]
-		[InlineData("bin", "bin-file.css")]
-		[InlineData("logs", "logs-file.css")]
-		[InlineData("node_modules", "app.css")]
-		[InlineData("obj", "obj-file.css")]
-		public void ExcludedFilesTest(string subFolder, string cssFileName)
-		{
-			var cssFilePath = Path.Join(_fileDirectory, subFolder, cssFileName);
+    [Theory]
+    [InlineData("", "_ignored.css")]
+    [InlineData("bin", "bin-file.css")]
+    [InlineData("logs", "logs-file.css")]
+    [InlineData("node_modules", "app.css")]
+    [InlineData("obj", "obj-file.css")]
+    public void ExcludedFilesTest(string subFolder, string cssFileName)
+    {
+        var cssFilePath = Path.Join(_fixture.FileDirectory, subFolder, cssFileName);
 
-			Assert.False(File.Exists(cssFilePath));
-		}
-	}
+        Assert.False(File.Exists(cssFilePath));
+    }
 }
