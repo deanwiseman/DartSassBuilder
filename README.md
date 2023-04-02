@@ -76,7 +76,7 @@ dsb help files
 ```
 -l, --level      Specify the level of output (silent, default, verbose)
 
---outputstyle    Specify the style of output (compressed, condensed, nested, expanded)
+--outputstyle    Specify the style of output (compressed, compact, nested, expanded)
 ```
 
 ## Directory command (default)
@@ -140,6 +140,7 @@ The support is largely dependant on [DartSassHost](https://github.com/Taritsyn/D
 This tool contains the following supporting packages:
 
 - Microsoft.ClearScript.V8.Native.win-x64
+- Microsoft.ClearScript.V8.Native.win-x86
 - Microsoft.ClearScript.V8.Native.linux-x64
 - Microsoft.ClearScript.V8.Native.osx-x64
 - Microsoft.ClearScript.V8.Native.osx-arm64

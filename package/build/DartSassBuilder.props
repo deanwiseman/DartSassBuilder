@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/DartSassBuilder.dll</SassExe>
-    <!-- outputstyle option for lsb (compressed, condensed, nested, expanded) --> 
+    <!-- outputstyle option for lsb (compressed, compact, nested, expanded) --> 
     <DartSassOutputStyle Condition=" '$(DartSassOutputStyle)'=='' ">compressed</DartSassOutputStyle> 
     <!-- level option for lsb -->
     <DartSassOutputLevel Condition=" '$(DartSassOutputLevel)'=='' ">default</DartSassOutputLevel> 
@@ -33,9 +33,6 @@
     <!-- add all sass files -->
     <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
     <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
-
-    <!-- filter out variable files that don't get compiled -->
-    <SassFilesToCompile Include="@(SassFile)" Exclude="**/_*.scss;**/_*.sass"></SassFilesToCompile>
   </ItemGroup>
 
 </Project>

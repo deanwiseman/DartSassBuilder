@@ -13,7 +13,7 @@ namespace DartSassBuilder
             OutputStyle = OutputStyle.Compressed
         };
 
-        [Option("outputstyle", Required = false, HelpText = "Specify the style of output (compressed, condensed, nested, expanded)")]
+        [Option("outputstyle", Required = false, HelpText = "Specify the style of output (compressed, compact, nested, expanded)")]
         public OutputStyle OutputStyle
         {
             get
