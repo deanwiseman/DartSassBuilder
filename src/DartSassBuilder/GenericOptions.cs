@@ -8,6 +8,9 @@ namespace DartSassBuilder
         [Option('l', "level", Required = false, HelpText = "Specify the level of output (silent, default, verbose)")]
         public OutputLevel OutputLevel { get; set; } = OutputLevel.Default;
 
+        [Option('o', "output-path", Required = false, HelpText = "Specify the output path where files will be written to")]
+        public string OutputPath { get; set; }
+
         public CompilationOptions SassCompilationOptions { get; } = new CompilationOptions()
         {
             OutputStyle = OutputStyle.Compressed

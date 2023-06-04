@@ -8,138 +8,155 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DartSassBuilder
+namespace DartSassBuilder;
+
+class Program
 {
-    class Program
+    static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
-        {
-            var parser = new Parser(config =>
-            {
-                config.CaseInsensitiveEnumValues = true;
-                config.AutoHelp = true;
-                config.HelpWriter = Console.Out;
-            });
+        var parser = new Parser(config => {
+            config.CaseInsensitiveEnumValues = true;
+            config.AutoHelp = true;
+            config.HelpWriter = Console.Out;
+        });
 
-            await parser.ParseArguments<DirectoryOptions, FilesOptions>(args)
-                .WithNotParsed(e => Environment.Exit(1))
-                .WithParsedAsync(async o =>
+        await parser.ParseArguments<DirectoryOptions, FilesOptions>(args)
+            .WithNotParsed(e => Environment.Exit(1))
+            .WithParsedAsync(async o => {
+                switch (o)
                 {
-                    switch (o)
-                    {
-                        case DirectoryOptions directory:
-                            {
-                                var program = new Program(directory);
+                    case DirectoryOptions directory:
+                        {
+                            var program = new Program(directory);
 
-                                program.WriteLine($"Sass compile directory: {directory.Directory}");
+                            program.WriteLine($"Sass compile directory: {directory.Directory}");
 
-                                await program.CompileDirectoriesAsync(directory.Directory, directory.ExcludedDirectories);
+                            await program.CompileDirectoriesAsync(directory.Directory, directory.ExcludedDirectories);
 
-                                program.WriteLine("Sass files compiled");
-                            }
-                            break;
-                        case FilesOptions file:
-                            {
-                                var program = new Program(file);
-                                program.WriteLine($"Sass compile files");
+                            program.WriteLine("Sass files compiled");
+                        }
+                        break;
+                    case FilesOptions file:
+                        {
+                            var program = new Program(file);
+                            program.WriteLine($"Sass compile files");
 
-                                await program.CompileFilesAsync(file.Files);
+                            await program.CompileFilesAsync(file.Files);
 
-                                program.WriteLine("Sass files compiled");
-                            }
-                            break;
-                        default:
-                            throw new NotImplementedException("Invalid commandline option parsing");
-                    }
-                });
-        }
+                            program.WriteLine("Sass files compiled");
+                        }
+                        break;
+                    default:
+                        throw new NotImplementedException("Invalid commandline option parsing");
+                }
+            });
+    }
 
-        public GenericOptions Options { get; }
+    public GenericOptions Options { get; }
 
-        public Program(GenericOptions options)
+    public Program(GenericOptions options)
+    {
+        Options = options;
+    }
+
+    private async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)
+    {
+        var sassFiles = Directory.EnumerateFiles(directory)
+            .Where(file => file.EndsWith(".scss", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".sass", StringComparison.OrdinalIgnoreCase));
+
+        await CompileFilesAsync(sassFiles);
+
+        var subDirectories = Directory.EnumerateDirectories(directory);
+        foreach (var subDirectory in subDirectories)
         {
-            Options = options;
+            var directoryName = new DirectoryInfo(subDirectory).Name;
+            if (excludedDirectories.Any(dir => string.Equals(dir, directoryName, StringComparison.OrdinalIgnoreCase)))
+                continue;
+
+            await CompileDirectoriesAsync(subDirectory, excludedDirectories);
         }
+    }
 
-        async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)
+    private async Task CompileFilesAsync(IEnumerable<string> sassFiles)
+    {
+        try
         {
-            var sassFiles = Directory.EnumerateFiles(directory)
-                .Where(file => file.EndsWith(".scss", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".sass", StringComparison.OrdinalIgnoreCase));
+            using var sassCompiler = new SassCompiler(() => new V8JsEngineFactory().CreateEngine());
 
-            await CompileFilesAsync(sassFiles);
-
-            var subDirectories = Directory.EnumerateDirectories(directory);
-            foreach (var subDirectory in subDirectories)
+            foreach (var file in sassFiles)
             {
-                var directoryName = new DirectoryInfo(subDirectory).Name;
-                if (excludedDirectories.Any(dir => string.Equals(dir, directoryName, StringComparison.OrdinalIgnoreCase)))
+                var fileInfo = new FileInfo(file);
+                if (fileInfo.Name.StartsWith("_"))
+                {
+                    WriteVerbose($"Skipping: {fileInfo.FullName}");
+                    continue;
+                }
+
+                WriteVerbose($"Processing: {fileInfo.FullName}");
+
+                var result = sassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
+
+                var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
+
+                if (File.Exists(newFile) && result.CompiledContent.ReplaceLineEndings() == (await File.ReadAllTextAsync(newFile)).ReplaceLineEndings())
                     continue;
 
-                await CompileDirectoriesAsync(subDirectory, excludedDirectories);
+                await WriteFileAsync(fileInfo, result.CompiledContent, Options.OutputPath);
             }
         }
-
-        async Task CompileFilesAsync(IEnumerable<string> sassFiles)
+        catch (SassCompilerLoadException e)
         {
-            try
-            {
-                using var sassCompiler = new SassCompiler(() => new V8JsEngineFactory().CreateEngine());
+            Console.WriteLine("During loading of Sass compiler an error occurred. See details:");
+            Console.WriteLine();
+            Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
+        }
+        catch (SassCompilationException e)
+        {
+            Console.WriteLine("During compilation of SCSS code an error occurred. See details:");
+            Console.WriteLine();
+            Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
+        }
+        catch (SassException e)
+        {
+            Console.WriteLine("During working of Sass compiler an unknown error occurred. See details:");
+            Console.WriteLine();
+            Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
+        }
+    }
 
-                foreach (var file in sassFiles)
-                {
-                    var fileInfo = new FileInfo(file);
-                    if (fileInfo.Name.StartsWith("_"))
-                    {
-                        WriteVerbose($"Skipping: {fileInfo.FullName}");
-                        continue;
-                    }
+    private async Task WriteFileAsync(FileInfo file, string compiledContent, string outputPath = default)
+    {
+        var filePathToWrite = GetAbsoluteFilePath(file, outputPath);
 
-                    WriteVerbose($"Processing: {fileInfo.FullName}");
+        await File.WriteAllTextAsync(filePathToWrite, compiledContent);
+    }
 
-                    var result = sassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
-
-                    var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
-
-                    if (File.Exists(newFile) && result.CompiledContent.ReplaceLineEndings() == (await File.ReadAllTextAsync(newFile)).ReplaceLineEndings())
-                        continue;
-
-                    await File.WriteAllTextAsync(newFile, result.CompiledContent);
-                }
-            }
-            catch (SassCompilerLoadException e)
-            {
-                Console.WriteLine("During loading of Sass compiler an error occurred. See details:");
-                Console.WriteLine();
-                Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
-            }
-            catch (SassCompilationException e)
-            {
-                Console.WriteLine("During compilation of SCSS code an error occurred. See details:");
-                Console.WriteLine();
-                Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
-            }
-            catch (SassException e)
-            {
-                Console.WriteLine("During working of Sass compiler an unknown error occurred. See details:");
-                Console.WriteLine();
-                Console.WriteLine(SassErrorHelpers.GenerateErrorDetails(e));
-            }
+    private static string GetAbsoluteFilePath(FileInfo file, string outputPath = null)
+    {
+        // if no output path specified, write the file as is in current directory
+        if (string.IsNullOrWhiteSpace(outputPath))
+        {
+            return Path.ChangeExtension(file.FullName, ".css");
         }
 
-        void WriteLine(string line)
-        {
-            if (Options.OutputLevel >= OutputLevel.Default)
-            {
-                Console.WriteLine(line);
-            }
-        }
+        // if an output path is specified, get the absolute file path to the directory to write to
+        var absoluteOutputPath = Path.GetFullPath(outputPath);
+        return Path.Combine(absoluteOutputPath, Path.ChangeExtension(file.Name, ".css"));
+    }
 
-        void WriteVerbose(string line)
+    private void WriteLine(string line)
+    {
+        if (Options.OutputLevel >= OutputLevel.Default)
         {
-            if (Options.OutputLevel >= OutputLevel.Verbose)
-            {
-                Console.WriteLine(line);
-            }
+            Console.WriteLine(line);
+        }
+    }
+
+    private void WriteVerbose(string line)
+    {
+        if (Options.OutputLevel >= OutputLevel.Verbose)
+        {
+            Console.WriteLine(line);
         }
     }
 }
