@@ -78,7 +78,7 @@
           Condition="'$(_DartSassHashChanged)-$(DartSassShouldBuildBasedOnSassFiles)' == 'true-true' ">
     <PropertyGroup>
       <_SassFileList>@(SassFilesToCompile->'&quot;%(FullPath)&quot;', ' ')</_SassFileList> <!-- all valid files, space seperated, surrounded with quotes -->
-      <DartSassBuilderArgs>files $(_SassFileList) --outputstyle $(DartSassOutputStyle) --level $(DartSassOutputLevel)</DartSassBuilderArgs>
+      <DartSassBuilderArgs>files $(_SassFileList) --outputstyle $(DartSassOutputStyle) --level $(DartSassOutputLevel) --prefix $(DartSassPrefix)</DartSassBuilderArgs>
     </PropertyGroup>
     <Message Text="Converted SassFile list to argument" Importance="$(DartSassMessageLevel)" />
   </Target>

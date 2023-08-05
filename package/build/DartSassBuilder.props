@@ -4,16 +4,18 @@
 
   <PropertyGroup>
     <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/DartSassBuilder.dll</SassExe>
-    <!-- outputstyle option for lsb (compressed, compact, nested, expanded) --> 
-    <DartSassOutputStyle Condition=" '$(DartSassOutputStyle)'=='' ">compressed</DartSassOutputStyle> 
+    <!-- outputstyle option for lsb (compressed, compact, nested, expanded) -->
+    <DartSassOutputStyle Condition=" '$(DartSassOutputStyle)'=='' ">compressed</DartSassOutputStyle>
     <!-- level option for lsb -->
-    <DartSassOutputLevel Condition=" '$(DartSassOutputLevel)'=='' ">default</DartSassOutputLevel> 
+    <DartSassOutputLevel Condition=" '$(DartSassOutputLevel)'=='' ">default</DartSassOutputLevel>
+    <!-- add vendor prefix -->
+    <DartSassPrefix Condition="'$(DartSassPrefix)'==''">false</DartSassPrefix>
     <!-- option for msbuild task output -->
     <DartSassMessageLevel Condition=" '$(DartSassMessageLevel)'=='' ">Normal</DartSassMessageLevel>
 
     <EnableDefaultSassItems Condition="'$(EnableDefaultSassItems)'==''">true</EnableDefaultSassItems>
     <DefaultSassExcludes>**/bin/**;**/obj/**;**/node_modules/**;**/logs/**</DefaultSassExcludes>
-    
+
     <!-- 
       exclude for VS - https://docs.microsoft.com/en-us/visualstudio/msbuild/visual-studio-integration-msbuild#build-solutions 
       required from this issue (VS bug) - https://github.com/johan-v-r/DartSassBuilder/issues/15
@@ -24,11 +26,11 @@
 
     <!-- Provide DartSassBuilderArgs to take complete control -->
     <DartSassBuilderArgs Condition=" '$(DartSassBuilderArgs)'=='' "></DartSassBuilderArgs>
-    
+
     <!-- Add target to CustomCollectWatchItems -->
     <CustomCollectWatchItems>$(CustomCollectWatchItems);_DartSass_CustomCollectWatchItems</CustomCollectWatchItems>
   </PropertyGroup>
-  
+
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">
     <!-- add all sass files -->
     <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />

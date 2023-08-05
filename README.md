@@ -19,6 +19,8 @@ No configuration is required, it will compile the files implicitly on project bu
   <!-- outputstyle option -->
   <DartSassOutputStyle>compressed</DartSassOutputStyle>
   <DartSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</DartSassOutputStyle>
+  <!-- add vendor prefix -->
+  <DartSassPrefix>true</DartSassPrefix>
   <!-- level option -->
   <DartSassOutputLevel>verbose</DartSassOutputLevel>
   <!-- msbuild output level -->
