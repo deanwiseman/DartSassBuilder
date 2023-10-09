@@ -1,7 +1,4 @@
-﻿using CommandLine;
-using DartSassHost;
-
-namespace DartSassBuilder
+﻿namespace DartSassBuilder
 {
     public abstract class GenericOptions
     {

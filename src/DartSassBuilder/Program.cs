@@ -1,53 +1,40 @@
-﻿using CommandLine;
-using DartSassHost;
-using DartSassHost.Helpers;
+﻿using DartSassHost.Helpers;
+
 using JavaScriptEngineSwitcher.V8;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DartSassBuilder
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static Task Main(string[] args)
         {
-            var parser = new Parser(config =>
-            {
-                config.CaseInsensitiveEnumValues = true;
-                config.AutoHelp = true;
-                config.HelpWriter = Console.Out;
-            });
-
-            await parser.ParseArguments<DirectoryOptions, FilesOptions>(args)
+            return Parser.ParseArguments<DirectoryOptions, FilesOptions>(args)
                 .WithNotParsed(e => Environment.Exit(1))
                 .WithParsedAsync(async o =>
                 {
                     switch (o)
                     {
                         case DirectoryOptions directory:
-                            {
-                                var program = new Program(directory);
+                        {
+                            var program = new Program(directory);
 
-                                program.WriteLine($"Sass compile directory: {directory.Directory}");
+                            program.WriteLine($"Sass compile directory: {directory.Directory}");
 
-                                await program.CompileDirectoriesAsync(directory.Directory, directory.ExcludedDirectories);
+                            await program.CompileDirectoriesAsync(directory.Directory, directory.ExcludedDirectories);
 
-                                program.WriteLine("Sass files compiled");
-                            }
-                            break;
+                            program.WriteLine("Sass files compiled");
+                        }
+                        break;
                         case FilesOptions file:
-                            {
-                                var program = new Program(file);
-                                program.WriteLine($"Sass compile files");
+                        {
+                            var program = new Program(file);
+                            program.WriteLine($"Sass compile files");
 
-                                await program.CompileFilesAsync(file.Files);
+                            await program.CompileFilesAsync(file.Files);
 
-                                program.WriteLine("Sass files compiled");
-                            }
-                            break;
+                            program.WriteLine("Sass files compiled");
+                        }
+                        break;
                         default:
                             throw new NotImplementedException("Invalid commandline option parsing");
                     }
@@ -60,6 +47,13 @@ namespace DartSassBuilder
         {
             Options = options;
         }
+
+        private static Parser Parser => new(config =>
+            {
+                config.CaseInsensitiveEnumValues = true;
+                config.AutoHelp = true;
+                config.HelpWriter = Console.Out;
+            });
 
         async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)
         {
@@ -88,7 +82,7 @@ namespace DartSassBuilder
                 foreach (var file in sassFiles)
                 {
                     var fileInfo = new FileInfo(file);
-                    if (fileInfo.Name.StartsWith("_"))
+                    if (fileInfo.Name.StartsWith('_'))
                     {
                         WriteVerbose($"Skipping: {fileInfo.FullName}");
                         continue;

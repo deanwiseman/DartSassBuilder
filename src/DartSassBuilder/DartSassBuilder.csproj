@@ -15,6 +15,9 @@
 		<PackageTags>Sass Build DartSass SassBuilder</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageIcon>sass.png</PackageIcon>
+
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>
