@@ -2,8 +2,8 @@
 {
     public abstract class GenericOptions
     {
-        [Option('l', "level", Required = false, HelpText = "Specify the level of output (silent, default, verbose)")]
-        public OutputLevel OutputLevel { get; set; } = OutputLevel.Default;
+        [Option('l', "level", Required = false, HelpText = "Specify the level of output (Debug, Information, None)")]
+        public OutputLevel OutputLevel { get; set; } = OutputLevel.Information;
 
         public CompilationOptions SassCompilationOptions { get; } = new CompilationOptions()
         {
@@ -24,11 +24,5 @@
         }
     }
 
-    public enum OutputLevel
-    {
-        Silent,
-        Error,
-        Default,
-        Verbose
-    }
+
 }
