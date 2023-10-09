@@ -1,11 +1,8 @@
-﻿using CommandLine;
-using DartSassHost;
-
-namespace DartSassBuilder
+﻿namespace DartSassBuilder
 {
     public abstract class GenericOptions
     {
-        [Option('l', "level", Required = false, HelpText = "Specify the level of output (silent, default, verbose)")]
+        [Option('l', "level", Required = false, HelpText = "Specify the level of output (Debug, Information, None)")]
         public OutputLevel OutputLevel { get; set; } = OutputLevel.Default;
 
         public CompilationOptions SassCompilationOptions { get; } = new CompilationOptions()
@@ -27,10 +24,5 @@ namespace DartSassBuilder
         }
     }
 
-    public enum OutputLevel
-    {
-        Silent,
-        Default,
-        Verbose
-    }
+
 }

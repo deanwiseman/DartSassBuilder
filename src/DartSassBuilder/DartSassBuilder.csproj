@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<Version>1.0.0</Version>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 		<PackAsTool>true</PackAsTool>
 		<PackageId>DartSassBuilder-Tool</PackageId>
 		<ToolCommandName>dsb</ToolCommandName>
@@ -15,6 +15,9 @@
 		<PackageTags>Sass Build DartSass SassBuilder</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageIcon>sass.png</PackageIcon>
+
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>

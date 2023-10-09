@@ -2,7 +2,7 @@
   "profiles": {
     "DartSassBuilder": {
       "commandName": "Project",
-      "commandLineArgs": "../../../../DartSassBuilder.Tests"
+      "commandLineArgs": "../../../../DartSassBuilder.ExcludeTests -e foo bar"
     }
   }
 }

@@ -1,7 +1,4 @@
-﻿using CommandLine;
-using System.Collections.Generic;
-
-namespace DartSassBuilder
+﻿namespace DartSassBuilder
 {
 	[Verb("directory", isDefault: true)]
 	public class DirectoryOptions : GenericOptions
@@ -10,6 +7,6 @@ namespace DartSassBuilder
 		public string Directory { get; set; } = System.IO.Directory.GetCurrentDirectory();
 
 		[Option('e', "exclude", Required = false, HelpText = "Specify explicit directories to exclude. Overrides the default.", Default = new[] { "bin", "obj", "logs", "node_modules" })]
-		public IEnumerable<string> ExcludedDirectories { get; set; }
+		public IEnumerable<string> ExcludedDirectories { get; set; } = Enumerable.Empty<string>();
 	}
 }
