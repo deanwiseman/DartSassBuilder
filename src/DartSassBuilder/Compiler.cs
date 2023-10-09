@@ -19,22 +19,22 @@ namespace DartSassBuilder
             {
                 case DirectoryOptions directory:
                 {
-                    Logger.Information(line: $"Sass compile directory: {directory.Directory}");
+                    Logger.Default(line: $"Sass compile directory: {directory.Directory}");
 
                     await CompileDirectoriesAsync(directory.Directory,
                                                   directory.ExcludedDirectories,
                                                   options.SassCompilationOptions);
 
-                    Logger.Information(line: "Sass files compiled");
+                    Logger.Default(line: "Sass files compiled");
                 }
                 break;
                 case FilesOptions file:
                 {
-                    Logger.Information(line: $"Sass compile files");
+                    Logger.Default(line: $"Sass compile files");
 
                     await CompileFilesAsync(file.Files, options.SassCompilationOptions);
 
-                    Logger.Information(line: "Sass files compiled");
+                    Logger.Default(line: "Sass files compiled");
                 }
                 break;
                 default:
