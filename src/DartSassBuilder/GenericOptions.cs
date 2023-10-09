@@ -27,6 +27,7 @@
     public enum OutputLevel
     {
         Silent,
+        Error,
         Default,
         Verbose
     }
