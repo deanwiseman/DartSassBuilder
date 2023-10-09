@@ -12,27 +12,32 @@ namespace DartSassBuilder
                 .WithNotParsed(e => Environment.Exit(1))
                 .WithParsedAsync(async o =>
                 {
+                    if (o is not GenericOptions opt)
+                    {
+                        throw new NotImplementedException("Invalid commandline option parsing");
+                    }
+
+                    var compiler = new Compiler(opt);
+                    var logger = new ConsoleLogger(opt.OutputLevel);
+
                     switch (o)
                     {
                         case DirectoryOptions directory:
                         {
-                            var program = new Program(directory);
+                            logger.Log($"Sass compile directory: {directory.Directory}");
 
-                            program.WriteLine($"Sass compile directory: {directory.Directory}");
+                            await compiler.CompileDirectoriesAsync(directory.Directory, directory.ExcludedDirectories);
 
-                            await program.CompileDirectoriesAsync(directory.Directory, directory.ExcludedDirectories);
-
-                            program.WriteLine("Sass files compiled");
+                            logger.Log("Sass files compiled");
                         }
                         break;
                         case FilesOptions file:
                         {
-                            var program = new Program(file);
-                            program.WriteLine($"Sass compile files");
+                            logger.Log($"Sass compile files");
 
-                            await program.CompileFilesAsync(file.Files);
+                            await compiler.CompileFilesAsync(file.Files);
 
-                            program.WriteLine("Sass files compiled");
+                            logger.Log("Sass files compiled");
                         }
                         break;
                         default:
@@ -54,26 +59,21 @@ namespace DartSassBuilder
                 config.AutoHelp = true;
                 config.HelpWriter = Console.Out;
             });
+    }
 
-        async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)
+
+    public class Compiler
+    {
+        public Compiler(GenericOptions options, ConsoleLogger? logger = null)
         {
-            var sassFiles = Directory.EnumerateFiles(directory)
-                .Where(file => file.EndsWith(".scss", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".sass", StringComparison.OrdinalIgnoreCase));
-
-            await CompileFilesAsync(sassFiles);
-
-            var subDirectories = Directory.EnumerateDirectories(directory);
-            foreach (var subDirectory in subDirectories)
-            {
-                var directoryName = new DirectoryInfo(subDirectory).Name;
-                if (excludedDirectories.Any(dir => string.Equals(dir, directoryName, StringComparison.OrdinalIgnoreCase)))
-                    continue;
-
-                await CompileDirectoriesAsync(subDirectory, excludedDirectories);
-            }
+            Options = options;
+            Logger = logger ?? new ConsoleLogger(options.OutputLevel);
         }
 
-        async Task CompileFilesAsync(IEnumerable<string> sassFiles)
+        public GenericOptions Options { get; }
+        private ConsoleLogger Logger { get; }
+
+        public async Task CompileFilesAsync(IEnumerable<string> sassFiles)
         {
             try
             {
@@ -84,11 +84,11 @@ namespace DartSassBuilder
                     var fileInfo = new FileInfo(file);
                     if (fileInfo.Name.StartsWith('_'))
                     {
-                        WriteVerbose($"Skipping: {fileInfo.FullName}");
+                        Logger.Verbose($"Skipping: {fileInfo.FullName}");
                         continue;
                     }
 
-                    WriteVerbose($"Processing: {fileInfo.FullName}");
+                    Logger.Verbose($"Processing: {fileInfo.FullName}");
 
                     var result = sassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
 
@@ -120,20 +120,49 @@ namespace DartSassBuilder
             }
         }
 
-        void WriteLine(string line)
+        public async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)
         {
-            if (Options.OutputLevel >= OutputLevel.Default)
+            var sassFiles = Directory.EnumerateFiles(directory)
+                .Where(file => file.EndsWith(".scss", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".sass", StringComparison.OrdinalIgnoreCase));
+
+            await CompileFilesAsync(sassFiles);
+
+            var subDirectories = Directory.EnumerateDirectories(directory);
+            foreach (var subDirectory in subDirectories)
+            {
+                var directoryName = new DirectoryInfo(subDirectory).Name;
+                if (excludedDirectories.Any(dir => string.Equals(dir, directoryName, StringComparison.OrdinalIgnoreCase)))
+                    continue;
+
+                await CompileDirectoriesAsync(subDirectory, excludedDirectories);
+            }
+        }
+
+
+
+    }
+
+    public class ConsoleLogger
+    {
+
+        public ConsoleLogger(OutputLevel outputLevel = OutputLevel.Default)
+        {
+            OutputLevel = outputLevel;
+        }
+
+        private OutputLevel OutputLevel { get; }
+
+        public void Log(string line, OutputLevel level = OutputLevel.Default)
+        {
+            if (level >= OutputLevel)
             {
                 Console.WriteLine(line);
             }
         }
 
-        void WriteVerbose(string line)
+        public void Verbose(string line)
         {
-            if (Options.OutputLevel >= OutputLevel.Verbose)
-            {
-                Console.WriteLine(line);
-            }
+            Log(line, OutputLevel.Verbose);
         }
     }
 }
