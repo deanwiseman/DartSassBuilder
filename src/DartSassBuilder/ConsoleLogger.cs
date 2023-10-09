@@ -13,7 +13,6 @@
 
     public class ConsoleLogger
     {
-
         public ConsoleLogger(OutputLevel outputLevel = OutputLevel.Information)
         {
             OutputLevel = outputLevel;
@@ -32,7 +31,7 @@
         {
             if (level >= OutputLevel)
             {
-                Console.WriteLine(line);
+                Console.WriteLine($"{level}: {line}");
             }
         }
 
