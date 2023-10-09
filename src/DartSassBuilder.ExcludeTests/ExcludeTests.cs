@@ -1,24 +1,24 @@
 using System.IO;
+
+using TestBaseLib;
+
 using Xunit;
 
 namespace DartSassBuilder.ExcludeTests
 {
 	// This project is configured to run DartSassBuilder in DartSassBuilder.DirectoryTests.csproj excluding foo & bar directories
-	public class ExcludeTests
+	public class ExcludeTests : TestBase
 	{
-		private readonly string _fileDirectory;
-
-		public ExcludeTests()
+		public ExcludeTests(): base(null, "-e foo bar")
 		{
-			_fileDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
 		}
 
 		[Fact]
 		public void ExcludeFooFilesTest()
 		{
-			var fooFile = Path.Join(_fileDirectory, "foo/foo.css");
-			var barFile = Path.Join(_fileDirectory, "bar/bar.css");
-			var testFile = Path.Join(_fileDirectory, "test.css");
+			var fooFile = Path.Join(TestRoot, "foo/foo.css");
+			var barFile = Path.Join(TestRoot, "bar/bar.css");
+			var testFile = Path.Join(TestRoot, "test.css");
 
 			Assert.False(File.Exists(fooFile)); // excluded foo
 			Assert.False(File.Exists(barFile)); // excluded bar

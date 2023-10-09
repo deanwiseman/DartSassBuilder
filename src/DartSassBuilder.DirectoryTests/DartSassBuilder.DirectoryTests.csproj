@@ -24,9 +24,9 @@
     <ProjectReference Include="..\TestBaseLib\TestBaseLib.csproj" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PrepareForBuild" Condition="'$(TargetFramework)' != ''">
+  <!--<Target Name="PreBuild" BeforeTargets="PrepareForBuild" Condition="'$(TargetFramework)' != ''">
     <Message Text="Running project for tests in $(TargetFramework)" Importance="high" />
-    <Exec Command="dotnet run --project ../DartSassBuilder --framework $(TargetFramework) ./logs" />
-  </Target>
+    <Exec Command="dotnet run project ../DartSassBuilder framework $(TargetFramework) ./logs" />
+  </Target>-->
 
 </Project>

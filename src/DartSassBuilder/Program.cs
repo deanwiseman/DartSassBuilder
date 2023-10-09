@@ -1,6 +1,6 @@
 ﻿namespace DartSassBuilder
 {
-    static class Program
+    public static class Program
     {
         private static Parser Parser => new(config =>
             {
@@ -9,7 +9,7 @@
                 config.HelpWriter = Console.Out;
             });
 
-        static Task Main(string[] args)
+        public static Task Main(string[] args)
         {
             return
                 Parser.ParseArguments<DirectoryOptions, FilesOptions>(args)

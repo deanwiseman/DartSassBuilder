@@ -1,16 +1,19 @@
+using System;
 using System.IO;
+
+using TestBaseLib;
+
 using Xunit;
 
 namespace DartSassBuilder.Tests
 {
 	// This project is configured to run DartSassBuilder in DartSassBuilder.Tests.csproj
-	public class FileTests
+	public class FileTests : TestBase
 	{
-		private readonly string _fileDirectory;
+		private const string targetFolder = "test-files";
 
-		public FileTests()
+		public FileTests() : base(targetFolder)
 		{
-			_fileDirectory = Path.Join(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "test-files");
 		}
 
 		[Theory]
@@ -18,7 +21,7 @@ namespace DartSassBuilder.Tests
 		[InlineData("test-indented-format.css")]
 		public void FileExistsTest(string cssFileName)
 		{
-			var cssFilePath = Path.Join(_fileDirectory, cssFileName);
+			var cssFilePath = Path.Join(TestRoot, targetFolder, cssFileName);
 
 			Assert.True(File.Exists(cssFilePath));
 
@@ -33,7 +36,7 @@ namespace DartSassBuilder.Tests
 		[InlineData("obj", "obj-file.css")]
 		public void ExcludedFilesTest(string subFolder, string cssFileName)
 		{
-			var cssFilePath = Path.Join(_fileDirectory, subFolder, cssFileName);
+			var cssFilePath = Path.Join(TestRoot, subFolder, cssFileName);
 
 			Assert.False(File.Exists(cssFilePath));
 		}
