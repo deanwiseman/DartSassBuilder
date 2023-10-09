@@ -6,7 +6,9 @@ using Xunit;
 
 namespace DartSassBuilder.DirectoryTests
 {
-    // This project is configured to run DartSassBuilder in DartSassBuilder.DirectoryTests.csproj within ./logs directory
+    /// <summary>
+    /// Test class for running DartSassBuilder within the "logs" folder.
+    /// </summary>
     public class DirectoryTests : TestBase
     {
         private const string targetFolder = "./logs";
